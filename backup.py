@@ -1,14 +1,26 @@
-from collections import deque
+from collections import deque, namedtuple
+from enum import Enum
 from pathlib import Path
-from tree import Tree
+from tree import Node, NodeWrapper, Fil, Dir, FileSysTree
 
-def make_backup_tree(backup_dir) -> Tree:
-    """Generate `tree` from `backup_dir`."""
-    tree = Tree()
+class UpdateMethod(Enum):
+    ADD = 1
+    DEL = 2
+
+
+class UpdateQuItem:
+    def __init__(self, method:UpdateMethod, node: NodeWrapper):
+        self.method = method
+        self.node = node
+
+
+def make_tree_update_qu(dir_path:Path, tree:FileSysTree) -> list[UpdateQuItem]:
+    """Generate qu of updates to make to make to `tree` based on the comparison beween the nodes in `tree` and `dir_path`."""
+    
     # TODO
     return tree
 
-def make_xfer_qu(src:Path, backup_tree:Tree) -> list[Path]:
+def make_xfer_qu(src:Path, backup_tree:FileSysTree) -> list[Path]:
     """Generate `qu` from `src` and `backup_tree`."""
     qu:list[Path] = list() # ordered list/qu of dirs and files from `src` that are not yet in the backup destination 
     # TODO
@@ -26,11 +38,6 @@ def xfer(xfer_qu:list[Path], dest:Path) -> list[Path]:
             failed_paths.append(path)
     return failed_paths
 
-def append_to_tree(paths:list[Path], tree:Tree):
+def append_to_tree(paths:list[Path], tree:FileSysTree):
     """Append new paths from `path` to `tree`."""
     pass # TODO
-
-def run(src:Path, dest:Path, tree:Tree):
-    # read contents of
-    src_cursor:deque = deque([src.name])
-    # TODO
