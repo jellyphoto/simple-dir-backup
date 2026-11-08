@@ -39,7 +39,7 @@ class Dir(Node):
         
         self.fils.add(fil)
 
-    def add_dir(self, dir:Dir):
+    def add_dir(self, dir:Self):
         """Add item to `dirs`."""
         if(not isinstance(dir, Dir)):
             raise TypeError(f"dir is {type(dir)}")
