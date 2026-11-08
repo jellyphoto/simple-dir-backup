@@ -43,6 +43,7 @@ class Dir(Node):
         """Add item to `dirs`."""
         if(not isinstance(dir, Dir)):
             raise TypeError(f"dir is {type(dir)}")
+        
         elif(dir.name in self.dirs.keys()):
             raise SameDirNameException(f"'{dir.name}' preexists in {self.name}")
         
