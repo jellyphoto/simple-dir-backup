@@ -1,6 +1,6 @@
 from datetime import datetime
 from pathlib import Path
-from typing import Self
+from typing import Optional, Self
 
 class SameFilNameException(Exception): pass
 class SameDirNameException(Exception): pass
@@ -26,11 +26,15 @@ class Fil(Node):
 
 
 class Dir(Node):
-    def __init__(self, dirs:dict[str,Self]=dict(), fils:set[Fil]=set()):
-        self.dirs = dirs
-        self.fils = fils
+    def __init__(self, dirs:Optional[dict[str,Self]]=None, fils:Optional[set[Fil]]=None):
+        self.dirs: dict[str, Self] = (
+            dict() if dirs is None else dirs
+        )
+        self.fils: set[Fil] = (
+            set() if fils is None else fils
+        )
 
-    def add_fil(self, fil:Fil):
+    def add_fil(self, fil):
         """Add item to `fils`."""
         if(not isinstance(fil, Fil)):
             raise TypeError(f"fil is {type(fil)}")
@@ -39,17 +43,17 @@ class Dir(Node):
         
         self.fils.add(fil)
 
-    def add_dir(self, dir:Self):
+    def add_dir(self, dir):
         """Add item to `dirs`."""
-        if(not isinstance(dir, Dir)):
-            raise TypeError(f"dir is {type(dir)}")
+       # if(not isinstance(dir, Dir)):
+        #    raise TypeError(f"dir is {type(dir)}")
         
-        elif(dir.name in self.dirs.keys()):
+        if(dir.name in self.dirs.keys()):
             raise SameDirNameException(f"'{dir.name}' preexists in {self.name}")
         
         self.dirs[dir.name] = dir
 
-    def add(self, node:Node):
+    def add(self, node):
         """Add file or directory item."""
         if(isinstance(node, Fil)):
             self.add_fil(node)
